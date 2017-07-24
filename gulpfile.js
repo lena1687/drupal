@@ -6,8 +6,10 @@ let gulp = require('gulp');
 let gulpLoadPlugins = require('gulp-load-plugins');
 let plugins = gulpLoadPlugins();
 
+let root = './sites/all/themes/lenas/';
+
 gulp.task('less', function () {
-    return gulp.src('./less/**/*.less')
+    return gulp.src(root + 'less/**/*.less')
         .pipe(plugins.less({
             paths: [ path.join(__dirname, 'less', 'includes') ]
         }).on('error', function(e) { this.emit('end'); console.log(e); }))
@@ -22,7 +24,7 @@ gulp.task('less', function () {
         }).on('error', function(e) { this.emit('end'); console.log(e); }))
         .pipe(plugins.minifyCss())
         .pipe(plugins.rename({suffix: '.min'}))
-        .pipe(gulp.dest('./css'));
+        .pipe(gulp.dest(root + 'css'));
 });
 
 gulp.task('watch', function() {
