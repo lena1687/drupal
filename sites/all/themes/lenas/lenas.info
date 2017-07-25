@@ -1,6 +1,39 @@
 name = lenas
-description = new themes for drupal lenas
+description = new themes for drupal lenas (Bootstrap)
 package = Core
-version = VERSION 1.0
-core = 7.56
-stylesheets[all][] = ./css/style.min.css
+version = VERSION
+core = 7.x
+
+
+;;;;;;;;;;;;;;;;;;;;;;; Stylesheets;;;;;;;;;;;;;;;;;;;;;
+
+stylesheets[all][] = css/style.min.css
+
+;;;;;;;;;;;;;;;;;;;;;;; Features;;;;;;;;;;;;;;;;;;;;;
+
+features[ ] = logo
+features[ ] = name
+features[ ] = node_user_picture
+features[ ] = comment_user_picture
+features[ ] = favicon
+features[ ] = main_menu
+
+;;;;;;;;;;;;;;;;;;;;;;; Regions;;;;;;;;;;;;;;;;;;;;;
+
+regions[top-header-tel] = Top Header - tel
+regions[top-header-soc] = Top Header - social
+regions[bottom-header-logo] = Bottom Header - logo
+regions[bottom-header-menu] = Bottom Header - menu
+regions[front-slider] = Slider on the front page
+regions[site-content] = Content on the Site
+regions[feedback] = Feedback
+regions[footer-copyright] = Footer copyright
+regions[footer-mail] = Footer mail
+regions[highlighted] = Highlighted
+regions[help] = Help
+
+
+
+
+
+
