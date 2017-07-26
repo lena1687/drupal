@@ -3,7 +3,7 @@ description = new themes for drupal lenas (Bootstrap)
 package = Core
 version = VERSION
 core = 7.x
-
+base theme = bootstrap
 
 ;;;;;;;;;;;;;;;;;;;;;;; Stylesheets;;;;;;;;;;;;;;;;;;;;;
 
@@ -25,7 +25,7 @@ regions[top-header-soc] = Top Header - social
 regions[bottom-header-logo] = Bottom Header - logo
 regions[bottom-header-menu] = Bottom Header - menu
 regions[front-slider] = Slider on the front page
-regions[site-content] = Content on the Site
+regions[front-content] = Content on the front page
 regions[feedback] = Feedback
 regions[footer-copyright] = Footer copyright
 regions[footer-mail] = Footer mail

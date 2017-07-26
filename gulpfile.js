@@ -28,7 +28,7 @@ gulp.task('less', function () {
 });
 
 gulp.task('watch', function() {
-    gulp.watch('./less/**/*.less', ['less']);  // Watch all the .less files, then run the less task
+    gulp.watch(root + 'less/**/*.less', ['less']);  // Watch all the .less files, then run the less task
 });
 
 gulp.task('default', ['less', 'watch']); // Default will run the 'entry' watch task

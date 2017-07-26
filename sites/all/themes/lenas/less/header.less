@@ -68,7 +68,7 @@ header {
               &>a {
                 display: inline-block;
                 text-transform: uppercase;
-                font-size: 1.14286rem;
+                font-size: 1.1rem;
                 text-decoration: none;
                 color: @color-black;
                 margin-right: 30px;
@@ -77,15 +77,17 @@ header {
                     margin-right: 0;
                   }
                   &:hover {
+                    background: transparent;
+                    transform: scale(1.1);
                     text-decoration: none;
                     color: @color-hover-grin;
                     border-bottom: 1px solid @color-hover-grin;
                   }
-                &:hover,
-                &:active,
-                &:focus {
-                  margin-right: 0;
-                }
+                  &:hover,
+                  &:active,
+                  &:focus {
+                    margin-right: 0;
+                  }
               }
             @media screen and (max-width: 991px) {
               width: 80px;
