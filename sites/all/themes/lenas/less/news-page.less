@@ -1,9 +1,10 @@
 @import "library";
 
-.news-page {
+.site-content {
   background-color: @color-light-blue;
     .strip {
       .strip;
+      height: 490px;
       @media screen and (max-width: 767px) {
         display: none;
       }
@@ -72,53 +73,53 @@
         width: 50%;
       }
     }
-    .news-column {
+    .views-table {
       margin-bottom: 5%;
-        .new {
+        tr {
           margin-top: 3%;
           border: 1px solid @color-light-pink;
           background-color: @color-white;
           border-radius: 5px;
           font-family: @font-roboto;
           padding: 2%;
-            img {
-              margin: 20px;
-              border-radius: 5px;
-                @media screen and (max-width: 767px) {
-                    width: 100px;
-                    height: 100px;
-                    margin: 10px;
+            .views-field-body {
+              font-size: 0.8rem;
+              padding-bottom: 20px;
+              h3 a {
+                color: @color-black;
+                font-weight: 500;
+                line-height: 1.1;
+                font-size: 1.5rem;
+                padding: 10px 0;
+                &:hover {
+                  text-decoration: none;
                 }
-                @media screen and (max-width: 575px) {
-                  width: 70px;
-                  height: 70px;
-                }
-            }
-            .title-new {
-              padding: 10px 0;
-            }
-            .block-new {
-              font-size: 1.14286rem;
-            }
-            .button-new {
-              margin-bottom: 10px;
-              margin-right: 10px;
-            }
-            .button-new a {
-              padding: 20px;
-              height: 32px;
-              color: @color-white;
-              background-color: @color-light-grin;
-              box-shadow: 0 0 2px 1px @color-hover-grin;
-              line-height: 0;
-              border-radius: 5px;
-              cursor: pointer;
+              }
+              span a {
+                float: right;
+                margin: 20px 10px 0 0;
+                padding: 10px;
+                color: @color-white;
+                background-color: @color-light-grin;
+                box-shadow: 0 0 2px 1px @color-hover-grin;
+                line-height: 0;
+                border-radius: 5px;
+                cursor: pointer;
                 &:hover,
                 &:active,
                 &:focus {
                   transform: scale(1.1);
                   text-decoration: none;
                   color: #ffffff;
+                }
+              }
+            }
+            .views-field-field-img  {
+              width: 20%;
+              height: 100%;
+                img {
+                  margin: 20px 0 0 7px;
+                  border-radius: 5px;
                 }
             }
         }

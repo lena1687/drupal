@@ -1,3 +1,4 @@
+<?php phpinfo(); ?>
 <header id="header">
   <section class="top-header">
     <div class="container">
@@ -37,6 +38,7 @@
 <section class="site-content">
   <div class="strip"></div>
   <div class="container">
+    <h1 class="text-center"><?php print $title ?></h1>
     <div class="row">
       <div class="col-xl-5 col-sm-4 col-12">
         <?php if ($page['front-slider']): ?>
@@ -62,3 +64,19 @@
     </div>
   </div>
 </section>
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-5 col-12 text-sm-left text-center">
+        <?php if ($page['footer-copyright']): ?>
+          <?php print render($page['footer-copyright']); ?>
+        <?php endif; ?>
+      </div>
+      <div class="col-sm-7 col-12 text-sm-left text-center">
+        <?php if ($page['footer-mail']): ?>
+          <?php print render($page['footer-mail']); ?>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
+</footer>

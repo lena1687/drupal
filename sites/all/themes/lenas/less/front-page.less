@@ -93,15 +93,17 @@
   }
 }
 .block-webform {
-  h2 {
+  h2,
+  .control-label {
     margin: 30px 0 25px;
     font-size: 1.42857rem;
     font-weight: 400;
     color: @color-light-pink;
     text-shadow: @color-gray 2px 1px 1px;
   }
-  .webform-client-form .webform-component {
-      input {
+  .webform-client-form {
+      input,
+      select {
          height: 50px;
          width: 100%;
          color: @color-gray;
@@ -109,51 +111,56 @@
          padding-left: 10px;
          border: 1px solid @color-light-grin;
          border-radius: 5px;
-         margin-bottom: 25px;
+         margin-bottom: 15px;
          &:hover,
          &:active,
          &:focus {
            border: 1px solid @color-hover-grin;
          }
       }
+      select {
+        text-indent: 0.01px;
+        text-overflow: '';
+        appearance: none !important;
+        background: url('../img/arrow.png') no-repeat right center;
+      }
+      .webform-component--surname,
+      .webform-component--select {
+
+
+      }
       .webform-component--name,
       .webform-component--email {
-        margin-right: 25px;
+
       }
-      select {
-         text-indent: 0.01px;
-         text-overflow: '';
-         appearance: none !important;
-         background: url('../img/arrow.png') no-repeat right center;
-       }
-      .webform-component--question input {
+      textarea {
         color: @color-gray;
+        border: 1px solid @color-light-grin;
         width: 100%;
         padding: 15px 0 0 10px;
-        height: 300px;
         border-radius: 5px;
         font-size: 1.14286rem;
       }
    }
-  .webform-component--newsletter {
-   margin-top: 5%;
-     .agreement {
-       margin-right: 15%;
-         @media screen and (max-width: 767px) {
-           margin-right: 0;
-           margin-bottom: 5%;
-         }
-     }
-     .negation {
-       @media screen and (max-width: 767px) {
-         margin-bottom: 5%;
-       }
-     }
-     }
+    .webform-component--newsletter {
+      margin-top: 3%;
+      margin-bottom: 0;
+      .control-label {
+        margin-right: 20px;
+        font-size: 1.2rem;
+      }
+      .form-type-checkbox input[type="checkbox"] {
+        position: relative;
+        top: 9px;
+        height: 27px;
+        width: 27px;
+        display: inline-block;
+      }
+    }
    .form-actions .button-primary.btn.btn-default.form-submit {
      text-transform: uppercase;
      float: right;
-     margin: 20px 0 45px;
+     margin: 0 0 30px;
      padding: 0 20px;
      height: 52px;
      color: @color-white;
@@ -171,7 +178,7 @@
          color: #ffffff;
        }
     }
-@media screen and (max-width: 575px) {
- padding: 0 10px;
-}
+  @media screen and (max-width: 575px) {
+   padding: 0 10px;
+  }
 }
