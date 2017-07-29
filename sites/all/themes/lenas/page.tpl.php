@@ -1,4 +1,3 @@
-<?php phpinfo(); ?>
 <header id="header">
   <section class="top-header">
     <div class="container">
@@ -40,14 +39,14 @@
   <div class="container">
     <h1 class="text-center"><?php print $title ?></h1>
     <div class="row">
-      <div class="col-xl-5 col-sm-4 col-12">
-        <?php if ($page['front-slider']): ?>
-          <?php print render($page['front-slider']); ?>
+      <div class="col-xl-4 col-sm-3 col-12">
+        <?php if ($page['left-side']): ?>
+          <?php print render($page['left-side']); ?>
         <?php endif; ?>
       </div>
-      <div class="col-xl-6 col-xl-offset-1 col-sm-7 col-sm-offset-1 col-12">
-        <?php if ($page['front-content']): ?>
-          <?php print render($page['front-content']); ?>
+      <div class="col-xl-7 col-xl-offset-1 col-sm-8 col-sm-offset-1 col-12">
+        <?php if ($page['right-side']): ?>
+          <?php print render($page['right-side']); ?>
         <?php endif; ?>
       </div>
     </div>
@@ -56,7 +55,7 @@
 <section class="feedback">
   <div class="container">
     <div class="row">
-      <div class="col-xl-6 col-xl-offset-6 col-lg-7 col-lg-offset-5 col-md-12">
+      <div class="col-xl-7 col-xl-offset-5 col-lg-8 col-lg-offset-4 col-md-12">
         <?php if ($page['feedback']): ?>
           <?php print render($page['feedback']); ?>
         <?php endif; ?>
