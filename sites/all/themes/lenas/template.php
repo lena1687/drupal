@@ -1,7 +1,7 @@
 <?php
-function mytheme_preprocess_page(&$vars, $hook) {
-    if (isset($vars['node'])) {
-        $vars['theme_hook_suggestions'][] = 'page__'. str_replace('_', '--', $vars['node']->type);
-    }
+function phptemplate_preprocess_page(&$vars) {
+  if (isset($vars['node'])) {
+    $vars['template_files'][] = 'page-'. str_replace('_', '-', $vars['node']->type);
+  }
 }
 ?>
