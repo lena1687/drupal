@@ -4,4 +4,5 @@ function phptemplate_preprocess_page(&$vars) {
     $vars['template_files'][] = 'page-'. str_replace('_', '-', $vars['node']->type);
   }
 }
+
 ?>

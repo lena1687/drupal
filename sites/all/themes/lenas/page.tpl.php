@@ -23,7 +23,7 @@
             <?php print render($page['bottom-header-logo']); ?>
           <?php endif; ?>
         </div>
-        <div class="col-sm-9 col-12">
+        <div class="col-sm-9 col-12 text-right">
           <ul class="nav navbar-nav navbar header-menu pull-right">
             <?php if ($page['bottom-header-menu']): ?>
               <?php print render($page['bottom-header-menu']); ?>
