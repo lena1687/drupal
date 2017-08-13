@@ -34,7 +34,13 @@
     </div>
   </nav>
 </header>
+
 <section class="site-content">
+<?php if ($messages): ?>
+    <div id="messages"><div class="section clearfix">
+      <?php print $messages; ?>
+    </div></div> <!-- /.section, /#messages -->
+  <?php endif; ?>
   <div class="strip"></div>
   <div class="container">
     <h1 class="text-center"><?php print $title ?></h1>

@@ -1,0 +1,244 @@
+<?php
+/**
+ * hook_menu().
+ */
+function database_menu() {
+  //создадим страницу для вывода формы для добавления ее в БД (db_insert)
+  $items['database/insert'] = array(  // страница доступна по адресу “/database/insert
+    'title' => 'Страница для вставки данных в таблицу',
+    'page callback' => 'drupal_get_form', //вывод формы с пом. функции 'drupal_get_form'
+    'page arguments' => array('database_insert_form'), //задание функции
+    'access arguments' => array('administer site configuration'),
+   	// Доступ к странице регулирует пермишн 'administer site configuration'
+   	//Здесь был взят уже существующий доступ в ядре Друпал.
+  );
+  //Создание страницы с таблицей для вывода данных (db_select)
+  $items['database/select'] = array(  // страница доступна по адресу database/select
+    'title' => 'Таблица с данными',
+    'page callback' => 'database_table_data_page',//эта функция будет выводить страницу.
+    'access arguments' => array('administer site configuration'),
+  );
+  //Создание страницы для удаления записей (db_delete)
+  $items['database/%/delete'] = array(  //страница подтверждения удаления
+    'title callback' => 'database_delete_page_title', //функция вывода заголовка стр.
+    'title arguments' => array(1), //подставлятся вместо значка ‘%’(database/%/delete)
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('database_delete_form', 1),
+    'access arguments' => array('administer site configuration'),
+  );
+  //Создание страницы для обновления записей (db_update)
+  $items['database/%/update'] = array(
+    'title callback' => 'database_update_page_title',
+    'title arguments' => array(1),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('database_update_form', 1),
+    'access arguments' => array('administer site configuration'),
+  );
+  return $items;
+}
+
+
+// функция для формы будет 'database_insert_form'- создание полей
+function database_insert_form($form, $form_state) {
+  $form = array();
+  $form['number'] = array(  //поле с проверкой на только целое число, до 10 символов.
+    '#title' => t('Number'),
+    '#type' => 'textfield',
+    '#maxlength' => 10,
+    '#description' => t('Only numbers'),
+    '#required' => TRUE,
+  );
+  $form['teaser'] = array(  //поле с максимальной длинной 150 символов.
+    '#title' => t('Teaser'),
+    '#type' => 'textfield',
+    '#maxlength' => 150,
+    '#required' => TRUE,
+  );
+  $form['text'] = array(
+    '#title' => t('Text'),
+    '#type' => 'textarea',
+    '#required' => TRUE,
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  );
+  return $form;
+}
+//Поле для id мы заполнять не будем, поскольку в БД оно у нас описано
+//как автоинкремент (то есть увеличение значения поле будет автоматически).
+/* валидация*/
+function database_insert_form_validate($form, &$form_state) {
+  if (drupal_strlen($form_state['values']['number']) > 10) {
+    form_set_error('number', t('Поле "@fieldname" должно быть не меньше @c символов.',
+      array('@fieldname' => t('Number'), '@c' => 10)));
+  }
+  elseif (!ctype_digit($form_state['values']['number'])) {
+    form_set_error('number', t('Поле не цифровое.'));
+    //Проверяет на наличие цифровых символов в строке
+  }
+  if (drupal_strlen($form_state['values']['teaser']) > 150) {
+    form_set_error('teaser', t('Поле "@fieldname" должно быть не меньше @c символов.',
+      array('@fieldname' => t('Teaser'), '@c' => 150)));
+  }
+}
+//вставка провалидированных данных в таблицу ls_table
+function database_insert_form_submit($form, &$form_state) {
+  $query = db_insert('ls_table')  //название таблицы
+    ->fields(array(    //метод для указание полей
+      'number' => $form_state['values']['number'],
+      'teaser' => $form_state['values']['teaser'],
+      'text'   => $form_state['values']['text'],
+    ))
+    ->execute();  //в этом методе происходит вставка в таблицу
+  if ($query > 0) {
+    drupal_set_message(t('Данные успешно отправлены.'));
+  }
+  else {
+    drupal_set_message(t("Данные не отправлены."), 'error');
+  }
+}
+//Обязательно стоит обратить внимание на проверку переменной $query. Если у нас происходит правильная вставка в БД, тогда нам возвращается первичный ключ. В данном случаи мы получаем значение поля id которое автоматически заполнилось. Если это значение больше нуля, тогда у нас есть гарантия, что данные вставились адекватно.
+
+
+
+//для вывода данных из таблицы - функция db_select
+function database_table_data_page() {
+  $header = array(t('ID'), t('Number'), t('Teaser'), t('Text'), t('Actions'));
+  //Для шапки необходимо создать отдельную переменную, для того, что бы код был структурирован и понятен. Вот наше содержимое шапки будущей таблицы:
+  $rows = array(); // Тело таблицы задается так
+  $query = db_select('ls_table', 't') // запрос к таблице ls_table, даем ей алиас t
+    ->fields('t', array('id', 'number', 'teaser', 'text'))
+    ->execute(); //выполняем запрос используя метод execute
+  while ($value = $query->fetchAssoc()) { //вывод данных и присвоение в переменную rows.
+    $rows[] = array(
+      $value['id'],
+      $value['number'],
+      $value['teaser'],
+      $value['text'],
+      l(t('Update'), "database/{$value['id']}/update"), //ссылка для обновления строки
+      l(t('Delete'), "database/{$value['id']}/delete"), //ссылка для удаления строки
+    );
+  }
+  return theme('table', array('header' => $header, 'rows' => $rows));
+}
+
+
+//для удаления данных из таблицы - функция db_delete
+function database_delete_page_title($id) {
+  $placeholders = array(':id' => $id); //запрос в БД выполняется с помощью db_query
+  $number = db_query("SELECT `number` FROM {ls_table} WHERE `id` = :id", $placeholders)->fetchField();
+  return t('Вы действительно хотите удалить строку с номером "@num"?', array('@num' => $number));
+}
+//сама форма подтверждения удаления
+function database_delete_form($form, $form_state) {
+  $form = array();
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  );
+  $form['cancel'] = array(
+    '#markup' => l(t('Отмена'), 'database'),
+  );
+  return $form;
+}
+//функция сабмита формы
+function database_delete_form_submit($form, &$form_state) {
+  $id = $form_state['build_info']['args'][0]; //достаем id и присваиваем в перем с таким же названием.
+  $result = db_delete('ls_table')
+    ->condition('id', $id)
+    ->execute();
+  $placeholders = array('@id' => $id);
+  if ($result) {
+    drupal_set_message(t('Запись @id успешно удалена.', $placeholders));
+  }
+  else {
+    drupal_set_message(t('Запись @id не найдена.', $placeholders), 'warning');
+  }
+  $form_state['redirect'] = 'database/select'; //перенаправение на страницу с записями.
+}
+
+
+//Создание страницы для обновления записей (db_update)
+function database_update_page_title($id) {
+  $placeholders = array(':id' => $id);
+  $number = db_query("SELECT `number` FROM {ls_table} WHERE `id` = :id", $placeholders)->fetchField();
+  if ($number) {
+    return t('Редактировать запись с "@num"', array('@num' => $number));
+  }
+  else {
+    return t('Не найдено.');
+  }
+}
+//создаем форму
+function database_update_form($form, $form_state) {
+  $form = array();
+  $id = $form_state['build_info']['args'][0];
+  $data = db_select('ls_table', 'm') //запрос в БД где выводится значения всех столбцов в ассоциативном массиве.
+    ->condition('m.id', $id)
+    ->fields('m')
+    ->execute()
+    ->fetchAssoc();
+  if (empty($data) || empty($data['number'])) {
+    $placeholders = array(
+      '@id' => $id,
+      '!back' => l(t('Назад'), 'database'),
+    );
+    $form['text'] = array(
+      '#markup' => t('Не найден "@id" id. !back.', $placeholders),
+    );
+    return $form;
+  }
+  $form['number'] = array(
+    '#title' => t('Number'),
+    '#type' => 'textfield',
+    '#maxlength' => 10,
+    '#description' => t('Only numbers'),
+    '#required' => TRUE,
+    '#default_value' => $data['number'],
+  );
+  $form['teaser'] = array(
+    '#title' => t('Teaser'),
+    '#type' => 'textfield',
+    '#maxlength' => 150,
+    '#required' => TRUE,
+    '#default_value' => $data['teaser'],
+  );
+  $form['text'] = array(
+    '#title' => t('Text'),
+    '#type' => 'textarea',
+    '#required' => TRUE,
+    '#default_value' => $data['text'],
+  );
+  $form['actions'] = array('#type' => 'actions'); //создаем элемент типа 'actions'. Этот тип оборачивает дочерние элементы в тег div со специальным классом, который дает Друпал-у понимание что элементы, которые предназначены для действий.
+  $form['actions']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  );
+  $form['actions']['cancel'] = array(
+    '#markup' => l(t('Отмена'), 'database')
+  );
+  $form['#validate'][] = 'database_insert_form_validate'; //валидация
+
+  return $form;
+}
+//обновления данных - функция по отправке формы
+function database_update_form_submit($form, &$form_state) {
+  $id = $form_state['build_info']['args'][0];
+  $values = $form_state['values'];
+  $query = db_update('ls_table')
+    ->fields(array(
+      'number' => $values['number'],
+      'teaser' => $values['teaser'],
+      'text' => $values['text'],
+    ))
+    ->condition('id', $id)
+    ->execute();
+  if ($query) {
+    drupal_set_message(t('Данные успешно обновлены'));
+  }
+  else {
+    drupal_set_message(t('Данные не обновлены'), 'warning');
+  }
+  $form_state['redirect'] = 'database/select';
+}

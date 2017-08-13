@@ -1,0 +1,43 @@
+ <?php
+/**
+ * @file
+ * Installation file for My database module.
+ */
+
+ function database_schema() {  //hook_schema отвечает за создание таблицы в БД Друпала
+  $schema['ls_table'] = array(   //создает переменную с ключом массива 'ls_table' - название таблицы
+    'description' => 'Custom table from My database module.',  // описание к таблице желательно
+    'fields' => array(
+      'id' => array(    // поле id - первичный ключ + автоинкремент;
+        'description' => 'The primary identifier for a record.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'number' => array(   // поле number - целые числа;
+        'description' => 'Field for integer number.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'teaser' => array(  // поле teaser - текст до 150 символов, следовательно тип будет varchar;
+        'description' => 'Teaser field.',
+        'type' => 'varchar',
+        'length' => 150,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'text' => array(      // поле text - тип текст.
+        'description' => 'Text field.',
+        'type' => 'text',
+        'not null' => FALSE,
+      ),
+    ),
+    'primary key' => array('id'),  //задает первичный ключ для поля 'id'
+  );
+  return $schema;  //возвращается массив
+}
+
+/*после включения модуля в БД создаться таблица ls_table.
+Если у Вас проблемы с модулем, вы нашли ошибку в уже созданой таблице, тогда выключите его, удалите и тогда снова включите. */

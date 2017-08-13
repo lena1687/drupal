@@ -1,0 +1,6 @@
+name = Custom form in Block
+description = Простой пример вывода кастомной формы,в кастомном блоке
+core = 7.x
+version = 7.x-1.x-dev
+
+

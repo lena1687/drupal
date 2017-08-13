@@ -1,0 +1,19 @@
+<?php
+
+//HOOK_BLOCK_INFO() - ОТОБРАЖЕНИЕ БЛОКА В СПИСКЕ БЛОКОВ
+function blockform_block_info() {
+  $blocks = array();
+  $blocks['custom_form_block'] = array(
+    'info' => t('Блок для формы'),
+  );
+  return $blocks;
+}
+
+//HOOK_BLOCK_VIEW() - ВЫВОД СОДЕРЖИМОГО БЛОКА
+function blockform_block_view($delta = '') {
+  if ($delta == 'custom_form_block') {
+      $block['subject'] = t('My form');
+      $block['content'] = drupal_get_form('database_insert_form');
+  }
+  return $block;
+}

@@ -1,0 +1,120 @@
+<?php
+ /**
+  * @file
+  * Build form.
+  */
+
+  /* Включение hook_menu(). */
+function myform_menu() {
+	$items = array();
+		$items['myform-page'] = array(    //адрес /myform-page
+		'title' => 'Первая форма', //заголовок страницы
+		'page callback' => 'drupal_get_form', //вывод страницы
+		//“drupal_get_form”, эта функция обрабатывает форму перед ее выводом
+		'page arguments' => array('myform'),
+		//в момент вывода страницы вызывается функция “drupal_get_form”
+		//с аргументом “myform
+		'access callback' => TRUE,
+		//задает доступ к странице без ограничений
+		);
+	return $items; //возвращаются все параметры
+}
+
+/* Построоение myform.*/
+function myform($form, $form_state) { //Для функции, которая выводит форму
+//необходимо прописывать переменные в аргументах “form” и “form_state”.
+	//в массиве $form_state — хранятся все данные о форме и ее состоянии.
+ 	$form[] = array(  //объявлена переменная $form
+ 		'#markup' => '<p>Заполните форму:</p>',  //описание перед формой
+ 	);
+	$form['name'] = array(
+			'#type'	=> 'textfield',
+			'#title' => t('Ваше имя'),
+			'#default_value' => t('Максим'),
+			'#required' => true
+		);
+	$form['surname'] = array(
+			'#type'	=> 'textfield',
+			'#title' => t('Ваша фамилия'),
+			'#default_value' => t('Сурков'),
+		);
+	$form['opinion'] = array(
+		  '#type' => 'select',
+		  '#title' => t('Ваше хобби'),
+		  '#options' => array('Спорт', 'Игры', 'Вязание'),
+		  '#prefix' => '<i>',
+			'#suffix' => '</i>'
+		);
+	$form['taste'] = array(
+		'#type' => 'radios',
+		'#title' => t('Вы любите мороженое:'),
+		'#options' => array(0 => t('Да'), 1 => t('Нет')),
+		'#description' => t('Точно?'),
+		'#required' => true
+    );
+	$form['submit'] = array(
+		'#type' => 'submit',
+		'#value' => t('Кнопочка'),
+//если через ajax
+    '#ajax' => array(                         // сказали Drupal, что используем Ajax
+    'callback' => 'myform_ajax_callback', // функция будет вызываться после нажатия на кнопку
+    'wrapper' => 'myform',             // id формы
+    'event' => 'click',
+		),
+  );
+ return $form; //возвращается $form
+}
+
+
+/*валидация формы*/
+function myform_validate($form, &$form_state) {
+	if($form_state['values']['surname']=='') {     //значения отправленных данных -в ключе “values”
+		$form_state['values']['surname']='Отсутствует';
+	}
+	 if(mb_strlen($form_state['values']['name'])<3){
+		form_set_error('name', t('Слишком короткое имя.'));
+	}
+	 if (is_numeric($form_state['values']['surname'])) {
+    form_set_error('surname', t('Значение поля "Ваша фамилия" некорректно.'));
+  }
+}
+
+/*отправка формы*/
+
+function myform_submit($form, &$form_state) {
+
+	/* можно вывести на экран*/
+  $name = 'Ваше имя - ' .$form_state['values']['name'] .'<br>'; //создадим 4 переменные из полученных данных
+  $surname = 'Ваша фамилия - ' .$form_state['values']['surname']. '<br>';
+  $opinion = 'Ваше хобби - ' .$form_state['values']['opinion'] .'<br>';
+  $taste = 'Вы любите мороженое - ' .$form_state['values']['taste'];
+  $str = $name."\r\n".$surname."\r\n".$opinion."\r\n".$taste;
+drupal_set_message('Вывод на экран:<br>'.$str);
+
+
+/* можно записать в файл*/
+ //  $name = $form_state['values']['name']; //создадим 4 переменные из полученных данных
+	// $surname = $form_state['values']['surname'];
+	// $opinion = $form_state['values']['opinion'];
+	// $taste = $form_state['values']['taste'];
+	// $str = $name."\r\n".$surname."\r\n".$opinion."\r\n".$taste;  //объединяем их в одну переменную
+	// $file_name='public://'.md5(time()).'.txt';  //sites/default/files/public
+	// $file = fopen ($file_name,"w+");  //стандартными функциями PHP осущ. запись в файл.
+	// fputs ( $file, $str);
+	// fclose ($file);
+ //  drupal_set_message('Данные успешно сохранены в файл');
+
+/* можно записать в БД -модуль database в папке modules/custom*/
+
+}
+
+
+ /* Callback ajax form*/
+function myform_ajax_callback($form, &$form_state){
+  return $form; // отдали результат обратно в форму
+}
+
+
+?>
+
+
