@@ -1,0 +1,8 @@
+name = style_image_new
+description = style_image ver 2
+core = 7.x
+package = Features
+version = 7.x-2.0
+dependencies[] = image
+features[features_api][] = api:2
+features[image][] = 800_800

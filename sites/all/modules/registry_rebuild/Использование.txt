@@ -1,0 +1,2 @@
+http://example.com/sites/all/modules/registry_rebuild/registry_rebuild.php
+перестраивает пути при переносе, например модуля, в другую папку

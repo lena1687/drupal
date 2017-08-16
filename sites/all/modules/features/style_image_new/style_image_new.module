@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the style_image_new feature.
+ */
+
+include_once 'style_image_new.features.inc';
