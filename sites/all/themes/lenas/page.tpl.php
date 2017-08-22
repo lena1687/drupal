@@ -1,3 +1,6 @@
+<?php
+print render($page['content']['metatags']);
+?>
 <header id="header">
   <section class="top-header">
     <div class="container">

@@ -1,3 +1,4 @@
+<?php render($page['content'])?>
 <header id="header">
   <section class="top-header">
     <div class="container">
